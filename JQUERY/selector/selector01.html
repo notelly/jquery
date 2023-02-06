@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selector</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src = "selector01.js"></script>
+</head>
+<body>
+    <div>
+      <h1 class="blue">제이쿼리</h1>
+      <h2 id="title">선택자</h2>
+      <h3 class = "blue">직접선택자</h3>
+      <h4>그룹 선택자</h4>
+    </div>
+    <script>
+        /*
+        라이브러리(ex. jdbc 라이브러리, jquery) :기본적인 도구 > 망치, 가위, 칼
+        >> 도구를 조합해 원하는걸 다 만들 수 있다.
+
+        프레임워크(ex. mybatis, view): 일종의 키트 > 특정한 제품을 만들기 위해 도구를 모아둔 것
+        >> 어떤 제품을 만들지가 명확한 틀. 정해진 사용법 안에서만 써야한다.
+        
+        jquery
+         - 자바스크립트 라이브러리
+         - (네이티브) DOM을 제어하는데 특화되어 있다. 이벤트 처리, Ajax, Animation 을 쉽게 사용할 수 있도록 도와준다.
+         - 저걸 제외하고는 js를 기본적으로 써야한다.
+         - 경량 -> 다른 플러그인과 충돌을 일으키지 않는다.(★중요)
+        */
+
+       jQuery();
+       $(); //같은 의미
+       
+       //css 선택자를 이용
+       
+       // 직접 선택자 : node가 가지고 있는 속성들을 사용
+         // 전체 선택자 : * 를 이용한다.
+         console.log($('*')); //문자열로 들어간다. >> 오류가 나도 오류 알람이 뜨지 않는다.
+         //결과 : node list가 나온다. >> 유사 배열
+         //-> js 에서 검색결과가 배열이면 foreach를 쓰거나 해서 별도의 작업을 해줘야 하지만 jquery는 그럴 필요가 없다.
+         //어떤 선택자를 쓰느냐에 따라서 return 되는 값이 다르다.
+         $('*').css('border', '1px solid blue');
+
+
+         // 아이디 선택자 : # 
+         // #을 기반에서 검색하면 결과는 단 하나
+         $('#title').css('background-color', 'gray')
+                    .css('border', '2px solid black');
+                    //연속적으로 값을 주는게 가능한 이유는 호출하고 난 뒤에 반환 되는 것이 일종의 jquery이다 메소드를 호출하면 리턴 값은 객체이기 때문에 연속적으로 메소드를 호출해서 값 덮어쓰기가 가능해진다.
+         
+         // 클래스 선택자 : . >> 기본적으로 복수일 가능성이 높다.
+         let classTag = $('.blue'); //>> blue를 가지고 있는 것이 2개
+         //개별적으로 값을 주고 싶다면 반복문을 이용해야한다.
+
+         //classTag.array.forEach(element => {});
+            //forEach를 직접적으로 지원하는 건 아니다.
+            //prototype chain에 올라가서 호출하는 것
+            //classTag type : jquery
+         for(let i = 0; i < classTag.length; i++){
+            classTag[i].textContent += i; // >>유사 배열인거임
+            //jquery인 classTag안의 객체를 가리키는 순간, js의 node가 된다.
+            //classTag[i].text('추가'); 이렇게 안됨
+            $(classTag[i]).css('color', 'red');
+        }
+         //append 처럼 몇몇 메소드는 동일하다. >> 혼용해서 사용하는 경우가 많은데
+         //그럴 경우 충돌이 나는 경우가 가끔있다.
+
+         // 태그 선택자
+         //<>새로운 선택자를 만드는 것 지칭 할 때는 '' 안에 넣으면 된다.
+         $('h3').text('직접 선택자로 값 변경');
+         
+         // 그룹 선택자 : ,를 기준으로 나열하면 된다. >> 여러개를 한꺼번에 들고 올 수 있다.
+         $('#title, .blue, h4').css('color', 'green');
+
+         // 종속 선택자 : 태그를 지칭하면서 태그나 내용에 세부적인 정보를 준다.
+         $('h1.blue').text('종속 선택자로 선택');
+         //공백이 없어야한다. >> 공백이 잇으면 의미가 전혀 달라진다.
+    </script>  
+</body>
+</html>

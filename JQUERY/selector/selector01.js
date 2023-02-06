@@ -1,0 +1,1 @@
+//jquery 가 tag 가 필요하기 때문에 html과 js를 같은 파일에 둠

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selector</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
+<body>
+    <div id = "wrap">
+        <div id = "inner_wrap">
+            <h1>제목1</h1>
+            <h2>제목2</h2>
+            <h3>제목3</h3>
+            <p>내용</p>
+            <div>
+                <h1>하위 요소1</h1>
+                <h2>하위 요소2</h2>
+            </div>
+        </div>
+    </div>
+    <script>
+        //관계를 기반으로 한 선택자
+
+        //부모 선택자 : 메소드로 호출
+        $('#inner_wrap').parent().css('border', '1px solid black');
+        //parent() vs parents() >> JQuery.parent(selector?: string): JQuery
+        // 둘 다 매개변수를 00로 불러올 수 있다.
+
+        //기준 안에 있는 태그
+
+            //하위 요소 : 내 밑에 있는 모든 요소들 >> 공백 (연속적으로 공백이 있으면 h1태그 하위 요소로 h2태그가 들어간다.)
+            $('#wrap h1, h2').css('color', 'blue'); 
+            // 앞에 잇는 선택자를 기반으로 검색
+            //기준이 되는 id tag는 제외 >> 하위요소만 적용된다. 얼마나 깊이 들어가 있는지 상관X >> 내 내부에 있으면 전부 가능
+
+
+            //자식 요소 : 하위 요소 중에서 바로 밑에 있는 자식들만 >> 공백 상관 X
+            $('#inner_wrap > h1').text('자식 요소로 선택');
+            //만약 h1Tag가 없다면 반환 되는 게 없을 것
+            $('#inner_wrap').children('h2').text('메소드로 선택'); //하위 요소 2에는 걸리지 않는다.
+
+            //동일한 구조의 관계에서 똑같이 적용 될 수 있다.
+            $('div > h1').css('background-color', 'yellow');
+
+            //jqueyr >> 복수든 단수든 상관X js에서도 사용할 수 있지만
+            //js >> querySelector , querySelectorAll 로 구분해 주어야한다.
+    </script>
+    <hr>
+    <div id = "content">
+        <h1>인접 관계 선택자</h1>
+        <p>내용1</p>
+        <p class="txt">내용2</p>
+        <p>내용3</p>
+        <p>내용4</p>
+        <span>추가한 내용</span>
+    </div>
+    <script>
+        //형(이전) 요소 탐색자 : 기준 바로 앞에 있는 요소를 선택한다.
+        $('.txt').prev().css('background-color', '#0ff') // prev : 바로 이전 요소에 대해 검색할 때 
+                        .css('border', '2px solid #f00');
+        $('.txt').prevAll().text('이전 요소들'); //h1태그 까지 영향을 줌.
+        $('.txt').prevUntil('h1').css('border', '10px solid green'); // h1 전까지 걸겠다. h1 까지 아님
+
+        //동생(이후)  요소 탐색자
+        $('.txt').next().next().css('color', 'red'); // next 바로 뒤에 >> 2번 가고 싶다면 next().next() 이런식으로 여러번 쓰면 된다.
+        $('.txt').nextAll().text('다음 요소들');
+        $('.txt').nextUntil('span').css('border', '10px solid skyblue');
+        //기준이 되는 값 직전 까지 포함된다.
+
+        //plus : 기준이 되는 요소에서 다음 요소
+        // >> (주의).txt 동생들 중에 .txt 다음에 있는 요소가 p이면 값을 반환하고 p가 아니면 반환이 안된다.
+        // 검색하는 것이 아님 >> 조건에 따라 맞으면 반환, 틀리면 반환 X
+        // >> 오류가 나는 건 아님 R:객체는 생성되기 때문에 객체의 메소드로 호출하는데에는 문제가 없다. 적용이 되지 않을 뿐이다.
+        $('.txt + span').text('선택'); //값을 정확하게 지정해 주어야한다.
+    </script>
+    <hr>
+    <div>
+        <h5 class = "title">선택자</h5>
+        <section>
+            <div>
+                <p class="txt1">내용</p>
+            </div>
+        </section>
+        <section>
+            <div>
+                <p class="txt2">내용</p>
+            </div>
+        </section>
+    </div>
+    <script>
+        // 상위 요소 선택자 : 부모 이상의 모두를 가지고 오는 것
+        $('.txt2').parents('div').css('border', '3px solid yellow');
+        //내 부모중에 div를 모두 검색한다.
+        //반환되는 기준이 다르다. >> 해당 조건에 만족하는 요소 모두를 가지고 온다.
+        //parents() >> (기준을 적는다.)
+
+        //나랑 가장 가까운 상위 요소 선택자 : 해당 조건를 만족하는 가장 가까운 기준 하나를 가지고 온다.
+        // 쭉 올라가다가 조건에 걸리면 바로 스탑
+        $('.txt1').closest('div').css('border', '2px solid blue');
+
+        // 전체 형제 요소 선택자 : 자신을 제외하고 같은 레벨에 있는 모든 요소를 가지고 온다.
+        $('h5').siblings().css('background-color', 'pink');
+
+
+        //관계를 기반으로 한 선택자 모두 자기 자신을 제외하고 요소를 가지고 오는 것임
+        //복합적으로 쓰는 경우가 많다.
+    </script>
+
+
+</body>
+
+</html>

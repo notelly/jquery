@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <style>
+        th,
+        td {
+            border: 1px solid black;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div>
+        <div>
+            <label for="name">이름</label>
+            <input type="text" id="name">
+        </div>
+        <br>
+        <div id="grade">
+            <label for="grade">학년</label>
+            <input type="radio" id="grade" name="grade" value="1">1학년
+            <input type="radio" id="grade" name="grade" value="2">2학년
+            <input type="radio" id="grade" name="grade" value="3">3학년
+        </div>
+        <div id="class">
+            <label for="regular">정규수업</label>
+            <input type="checkbox" id="regular" name="regular" value="국어">국어
+            <input type="checkbox" id="regular" name="regular" value="수학">수학
+            <input type="checkbox" id="regular" name="regular" value="영어">영어
+            <input type="checkbox" id="regular" name="regular" value="사회">사회
+            <input type="checkbox" id="regular" name="regular" value="과학">과학
+        </div>
+        <div>
+            <label for="extra">보충수업</label>
+            <select id="extra">
+                <option value="국어">국어</option>
+                <option value="수학">수학</option>
+                <option value="영어">영어</option>
+                <option value="사회">사회</option>
+                <option value="과학">과학</option>
+            </select>
+        </div>
+        <div>
+            <button id="button">추가</button>
+            <button id="pButton">교수님 추가</button>
+        </div>
+    </div>
+    <table>
+        <tr>
+            <th>이름</th>
+            <th>학년</th>
+            <th colspan="5">정규수업</th>
+            <th>비고</th>
+        </tr>
+    </table>
+</body>
+<script>
+    function addTableFnc() {
+        let name = $('#name').val();
+        let grade = $('#grade :checked').val();
+        let regulars = $('#class :checked');
+        let classes = [];
+        for (let i = 0; i < regulars.length; i++) {
+            classes.push($(regulars[i]).val());
+        }
+        let extra = $('div > div:eq(3) :selected').val();
+        let extraMessage = '보충수업 :  ' + extra;
+        if ($('div > div:eq(2) > input[value="' + extra + '"]').is(':checked')) {
+            extraMessage = '정규수업에 포함된 경우 보충수업을 진행 할 수 업습니다.'
+        }
+
+        let tr = document.createElement('tr');
+        let td = document.createElement('td');
+
+    }
+
+    $('button').on('click', addTableFnc());
+
+    document.querySelector('#pButton').addEventListener('click', function () {
+        let data = getInfo();
+
+        let trTag = document.createElement('tr');
+        for (let field in data) {
+            let tdTag = document.createElement('td');
+
+            if (field == 'regular') {
+                let tdTag = null;
+                for (let i = 0; i < 5; i++) {
+                    let text = '미선택';
+                    if (i < data[field].length) {
+                        text = data[field][i];
+                    }
+                    tdTag = document.createElement('td');
+                    tdTag.textContent = text;
+                    trTag.append(tdTag);
+                }
+            } else {
+                createTdTag(trTag, data[field]);
+            }
+        }
+        document.querySelector('table').append(trTag);
+
+        /*let tdTag = document.createElement('td');
+        if (field == 'regular') {
+            data[field].forEach(function (val, idx) {
+                tdTag = document.createElement('td');
+                tdTag.textContent = val;
+                trTag.append(tdTag);
+                //createTdTag(trTag, val);
+            })
+        } else {
+            tdTag = document.createElement('tr');
+            tdTag.textContent = data[field];
+            trTag.append(tdTag);
+            //createTdTag(trTag, data[field]);
+        }*/
+
+    });
+
+    function getInfo() {
+        let name = $('div > div:eq(0) :text').val();
+        let grade = $('div > div:eq(1) :checked').val();
+        let regular = $('div > div:eq(2) :checked');
+        let regularArray = []
+        for (let i = 0; i < regular.length; i++) {
+            regularArray.push(regular[i].value);
+        }
+        let extra = $('div > div:eq(3) :selected').val();
+        let extraMessage = '보충수업 :  ' + extra;
+        if ($('div > div:eq(2) > input[value="' + extra + '"]').is(':checked')) {
+            extraMessage = '정규수업에 포함된 경우 보충수업을 진행 할 수 업습니다.'
+        }
+
+        return {
+            'name': name,
+            'grade': grade,
+            'regular': regularArray,
+            'extra': extraMessage
+        }
+    }
+
+    function createTdTag(tr, data) {
+        let td = document.createElement('td');
+        td.textContent = data;
+        tr.append(td);
+    }
+</script>
+
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selector</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
+<body>
+    <div>
+        <h1>탐색 선택자1</h1>
+        <ul id = "menu">
+            <li>내용1</li>
+            <li>내용2</li>
+            <!-- <li><li>내용2</li></li> 이런 경우 잘없지만 존재할 수 있다 >> 값들이 틀어짐 -->
+            <li>내용3</li>
+            <li>내용4</li>
+            <li>내용5</li>
+            <!--li 태그 같은 경우는 id나 class 값을 주는 경우가 잘 없다.-->
+        </ul>
+    </div>
+    <script>
+        // 탐색 선택자 : 결과를 기반으로 바뀐다.
+        // 내용3 으로 바꿔라
+        $('#menu').children('li')[2].textContent = '내용 변경';
+
+        //교수님
+        //js
+        let liTag = document.getElementById('menu').children;
+        liTag[2].textContent = 'js로 변경';
+        //위와 동일
+        document.getElementById('menu').children[2].textContent = 'js로 변경';
+
+        //jquery
+        liTag = $('#menu li');
+        liTag[2].textContent = 'jQuery로 변경';
+    </script>
+    <script>
+        //검색결과를 기준으로 동일하게 적용된다.
+
+        // first, last : 검색 결과 기준으로 첫번째, 마지막 요소
+        // 선택자로도 존재하고 메소드로도 존재한다.
+        $('#menu li:first').text('first 변경'); //선택자
+        $('#menu li')//아이디 menu 밑에 있는 모든 li를 가지고 옴
+        $('#menu li').first().css('color', 'red'); //메소드
+
+        $('#menu li:last').text('last 변경'); //선택자
+        $('#menu li').last().css('color', 'blue'); //메소드
+
+
+        // even : 홀수번째 요소 (짝수 인덱스)
+        // odd  : 짝수번째 요소 (홀수 인덱스)
+        let evenTag = $('#menu li:odd'); //홀수 변경을 원하면 odd > even으로 변경하면 된다.
+        for(let i=0; i< evenTag.length; i++){
+            evenTag[i].textContent = 2*(i+1);
+        }
+        //나는 짝수번째 요소라고 들고 오지만 컴퓨터 index로 봤을 때는 홀수 이기 때문에 +1을 해주면 된다.
+        
+        
+        //eq : 지정된 인덱스의 요소
+        //lt : 지정된 인덱스보다 작은 인덱스를 가진 모든 요소
+        //gt : 지정된 인덱스보다 큰 인덱스를 가진 모든 요소
+        $('#menu li:eq(2)').text('내용을 수정합니다.');// 위의 내용3 으로 바꿔라 를 탐색 선택자로 풀게되면 이렇게 하면된다. 
+        $('#menu li').eq(2).css('color', 'orange');
+    </script>
+    <div>
+        <h1>탐색 선택자2</h1>
+        <ol>
+            <p> p 태그1 </p>
+            <li>내용1-1</li>
+            <li>내용1-2</li>
+            <li>내용1-3</li>
+            <li>내용1-4</li>
+            <li>내용1-5</li>
+            <li>내용1-6</li>
+        </ol>
+        <ol>
+            <p> p 태그1 </p>
+            <li>내용2-1</li>
+            <li>내용2-2</li>
+            <li>내용2-3</li>
+        </ol>
+        <ol>
+            <li>추가된 내용</li>
+        </ol>
+        <script>
+            //탐색 선택자 : 그룹 별로 적용, 인덱스가 아닌 몇번째를 기준으로
+
+            // first-of-type, last-of-type : 각 group 내 첫번째, 마지막 요소
+            $('ol:eq(0) li:first-of-type').css('background-color', 'lightsalmon');
+            //탐색 선택자1 >> body > div:eq(0)
+            //탐색 선택자2 >> ol:eq(0)
+            //안 적어주면 전체 첫번째 요소들
+            //범위를 좁혀주는 것이 좋다. >> 상위 요소를 선행해서 써준다.
+
+            // nth-of-type() :각 group 내 몇번째 요소
+            $('body > div:eq(1) li:nth-of-type(2)').text('각 그룹내 두번째 요소');
+
+            // tag:nth-child : 부모의 모든 자식 요소들 중에서 몇번째이면서 tag일 경우
+            // first-child, last-child : 기준은 부모의 모든 자식 요소들 중 첫번째
+            $('body > div:eq(1) li:first-child').css('border', '1px solid black');
+            // 자식 요소에서 첫번째를 가지고 왔을 때 그게 li이냐? 아니면 다른거냐
+            // li이면 css 적용 아니면 적용 되지 않는다.
+
+            // nth-child(숫자n) : 검색 결과를 기준으로 몇번째 요소 >> 사용 시 주의 필요
+            $('li:nth-child(3n)').text('3의 배수'); //부모요소 기반으로 해서 자식들 순서 중에서 일치하는 것에 대해서 적용?
+            //결론 first-child, last-child와 nth-child 기준이 다름을 알아야 한다.
+        </script>
+    </div>
+</body>
+</html>
