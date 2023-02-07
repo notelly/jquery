@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <style>
+        .aqua {
+            background-color: lightblue;
+        }
+
+        .red {
+            background-color: lightcoral;
+        }
+
+        .green {
+            background-color: lightseagreen;
+        }
+
+        .yellow {
+            background-color: lightgoldenrodyellow;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="ex01">
+        <h1>
+            <strong>객체 조작 및 생성</strong>
+        </h1>
+        <section id="sec_1">
+            <h2>
+                <em>html()</em>
+            </h2>
+            <p>내용1</p>
+        </section>
+        <section id="sec_2">
+            <h2>
+                <em>text()</em>
+            </h2>
+            <p>내용2</p>
+        </section>
+    </div>
+    <script>
+        //html : 태그의 모든 하위요소를 인식해서 문자열로 반환한다. // 하위 요소를 전부 인식한다.
+        let htmlResult = $('#sec_1').html();
+        console.log(htmlResult);
+        //     -> 문자열 내의 태그를 인식하여 하위요소로 추가함
+        $('#sec_1').html('<a href="www.naver.com">text1</a>');
+        // text 1만 뜨고 기존에 있던 값은 사라진다. >> 파씽해서 하위요소로 출력
+        /*
+            <h2>
+                <em>html()</em>
+            </h2>
+            <p>내용1</p>
+        */
+
+        //text : 문자열 내의 태그를 인식해서 하위요소로 추가한다.
+        //tag를 인지 하지 않는다. >> 내것 뿐만 아니라 내 안에 있는 모든 요소의 text를 가지고 온다.
+        let textResult = $('#sec_2').text();
+        console.log(textResult);
+        //     -> 문자열 그대로 텍스트 속성으로 추가함
+        $('#sec_2').html('<a href="www.naver.com">text2</a>');
+        // 덮어쓰지만, 
+        /*
+                text()
+            
+            내용2
+        */
+
+        //test를 쓰든 html을 쓰든 내가 값을 집어 넣으면 덮어쓴다.
+        //덮어 쓰는 방식의 차이는 있음.
+
+        // html vs text : 공통점) 해당 태그의 하위요소를 대체
+        //                차이점) 태그 인지 여부
+    </script>
+    <script>
+        /*
+          val() -> 입력 태그들의 value 속성을 제어
+                -> input 태그는 value 속성 값으로 가지고 오는 것이 좋다.
+          css() -> style 속성
+                 : css('color', 'red')
+                 : css({ "color" : "red", "background-color" : ""}) 한꺼번에 처리가능 -> 객체 형태로 값을 가져 올 수 있다.
+        */
+
+        //개별적으로 본인의 메소드가 있는 경우에 대해서 메모
+    </script>
+    <div id="ex02">
+        <p id="p1">내용1</p>
+        <p id="p2">내용2</p>
+        <p id="p3">내용3</p>
+        <p id="p4" class="green">내용4</p>
+        <p id="p5" class="yellow">내용5</p>
+        <p id="p6"></p>
+        <button>p4</button>
+    </div>
+    <script>
+        // class 속성
+        // addClass() -> 기존에 값을 건들지 않고 지정한 값을 추가한다.
+        $('#p1').addClass('aqua');
+        $('#p1').addClass('content')
+
+        // removeClass() -> 지정한 값을 삭제한다.
+        $('#p1').removeClass('aqua');
+        $('#p1').removeClass(); //없으면 해당 클래스가 가지는 모든 정보 날리기 >> 깨질 수 있으므로 사용에 주의 해야한다.
+
+        // hasClass() -> 지정한 값이 존재하는 지, 결과 : boolean type(true/false)
+        let isClass = $('#p5').hasClass('yellow');
+        $('#p6').text(isClass);
+
+        //toggleClass() -> 지정한 값이 존재하면 삭제, 존재하지 않으면 추가
+        $('#p3').toggleClass('green'); //자동추가
+        $('#p3').toggleClass('green'); //자동 삭제
+
+        document.querySelector('button').addEventListener('click', function () {
+            $('#p4').toggleClass('hidden');
+        })
+    </script>
+    <div id="ex03">
+        <h1>
+            <strong>객체 조작 및 생성</strong>
+        </h1>
+        <section id="sec01">
+            <h2>
+                <img src="/data/piko.jpg" alt="이미지" border="2">
+            </h2>
+        </section>
+        <a id="get_comment" href="comments">코멘트</a>
+    </div>
+    <script>
+        /*
+            attribute(js) vs property(dom)
+            => 같을 수도 있고 다를 수도 있다.
+            attribute html 태그의 속성 => 정적인 속성의 태그
+            : 기본적으로 초기값이 정해져 있다. => 변하지 않는다.
+            
+
+            읽어들이고 받고 수정하고 => 전부 property를 다루는 것이다.
+            property : 값을 수정한다. => 변할 수 있다.
+
+
+            아무리 작업을 한다고 해도 브라우저를 끄고 다시 실행하면 초기값으로 돌아간다.
+            dom의 property를 제어하는 것이기 때문이다.
+        
+        */
+
+        //attr() -> html의 Attribute를 조작
+        //       -> 속성의 값을 가지고 올때 사용
+        let htmlSrc = $('#ex03 img').attr('src');
+        console.log(htmlSrc);
+        //              값을 줄때(속성의 값, 가져야 하는 값)
+        $('#ex03 img').attr('width', 500);
+        //값을 변경하지 못하는건 아니지만 property를 변경한 것과 같다고 생각하면 된다.
+        //파일이 변경된 것이 아니라 일시적으로 바뀐 것과 동일하다.
+        //              값을 없앨때
+        $('#ex03 img').removeAttr('src'); //src는 있지만 우리 눈에 안보이는 거임. 완전 삭제가 아니다.
+        /*
+            동일하게 값을 들고 있는 것이 맞음
+            하지만 똑같은 값이라고 하더라도 둘이 다르다
+            attribute : 동적으로 값이 정해져 있다.
+            /data/piko.png >> 파일 이름일 뿐 경로가 어딘지 모른다.(상대 경로)
+            >> 파일을 옮겨도 같이 실행이 가능하다.
+            a : piko.jpg
+            p : http://127.0.0.1:5500/data/piko.jpg
+            프로퍼티는 문제가 생긴다.
+
+        */
+
+        //prop() -> DOM의 property를 조작
+        //       -> 속성의 실질적인 제어
+        let domSrc = $('#ex03 img').prop('src');
+        console.log(domSrc);
+        $('#ex03 img').prop('src', '/data/piko.jpg');
+        // removeProp() : 표준 속성에서 작동하지 않음.
+        $('#ex03 img').removeProp('src'); //-> 초기 값으로 돌아간다.
+        //그림이 없어지는거 X 초기값으로 돌아가는 것.
+    </script>
+    <div>
+        <form action="#" id="form_1">
+            <div id="ex04">
+                <label for="chk1">체크1</label>
+                <input type="checkbox" name="chk1" id="chk1">
+                <label for="chk2">체크2</label>
+                <input type="checkbox" name="chk2" id="chk2" checked>
+                <label for="chk3">체크3</label>
+                <input type="checkbox" name="chk3" id="chk3">
+
+            </div>
+            <div>
+                <select name="select_1" id="selec_1">
+                    <option value="opt1" selected>옵션1</option>
+                    <option value="opt2">옵션2</option>
+                    <option value="opt3" selected>옵션3</option>
+                </select>
+            </div>
+        </form>
+        <script>
+            $('#chk2').prop('checked', false);
+            let checkVal = $('#chk2').prop('checked');
+            console.log('prop : ', checkVal); //false
+
+            checkVal = $('#chk2').attr('checked');
+            console.log('attr : ', checkVal) //checked
+
+            let selectVal = $('#select_1').prop('selectedIndex');
+            console.log(selectVal);
+        </script>
+    </div>
+</body>
+</html>

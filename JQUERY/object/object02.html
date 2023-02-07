@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
+<body>
+    <div id = "ex01">
+        <p>내용1</p>
+        <p>내용2</p>
+        <p>내용3</p>
+    </div>
+    <script>
+        /* 지정한 태그 이전 새 태그를 추가 (동일한 레빌)
+            : before(), insertBefor()
+            before : 기준이 되는 태그가 먼저 올 때 >> 호출하는 주체가 기본이 되는
+            A.before(B) – A 앞에 B를 추가
+            A.insertBefore(B) – B 앞에 A를 추가
+        */
+        $('#ex01 p:eq(1)').before('<p>Befor</p>');
+        $('<p id = "text">insertBefore</p>').insertBefore('#ex01 p:eq(0)');
+        
+        /* 지정한 태그 이후 새 태그를 추가(동일한 레벨)
+            : after(), insertAfter()
+            A.after(B) – A 뒤에 B를 추가
+            A.insertAfter(B) – B 뒤에 A를 추가
+        */
+        $('#ex01 p:last').after('<p>After</p>');
+        $('<p>insertAfter</p>').insertAfter('#ex01 p:eq(1)');
+        //기준의 형제요소로 들어감
+    </script>
+    <hr>
+    <div id = "ex02">
+        <ul id = "listZone">
+            <li>리스트</li>
+        </ul>
+    </div> 
+    <script>
+        /* 지정한 태그의 자식 요소 맨 마지막으로 추가(하위요소)
+            : append(), appendTo()
+            (기준이 되는 태그).append(추가하고자하는 태그)
+            (추가하고자 하는 태그).appendTo(추가하고자하는 태그의 부모태그)
+        */
+       $('#listZone').append('<li>append()</li>');
+       $('<li>appendTo()</li>').appendTo('#listZone');
+
+       /* 지정한 태그의 자식 요소 맨 앞으로 추가 (하위요소)
+            : prepend(), prependTo()
+       */
+       $('#listZone').prepend('<li>prepend()</li>');
+       $('<li>prepend()</li>').prepend('#listZone');
+       //기준의 자식요소로 들어감
+    </script>
+    <div id = "ex03">
+        <section class = "box1">
+            <h2>제목1</h2>
+            <div>내용1</div>
+            <div>내용2</div>
+        </section>
+        <section class = "box2">
+            <h2>제목2</h2>
+            <div>내용3</div>
+            <div>내용4</div>
+        </section>
+    </div>
+    <script>
+        /* 기존 태그 중 지정한 태그를 원하는 태그로 대체
+            : replaceALl(), replaceWith()
+            전체를 묶어서 하나의 태그로 대체하는 게 아니라
+            검색 결과에 개별적으로 태그를 대체 하는 것.
+        */
+        $('<p>Change</p>').replaceAll('#ex03 .box1 div');
+        $('#ex03 h2').replaceWith('<h3>replace method</h3>');
+    </script>
+    <hr>
+    <div id = "ex04">
+        <div class ="box1">
+            <p>내용1</p>
+            <p>내용2</p>
+        </div>
+        <div class ="box2">
+            <p>내용3</p>
+            <p>내용4</p>
+        </div>
+        <div class ="box3">
+            <p>내용5</p>
+            <p>내용6</p>
+        </div>
+    </div>
+    <script>
+        //clone() -> 태그 복사, 이벤트를 함께 복사
+        let copyobj = $('#ex04 .box1').children().clone();
+        $('#ex04 .box3').append(copyobj);
+
+        //empty() -> 태그의 하위 요소를 모두 삭제
+        $('#ex04 .box3').html('');
+        $('#ex04 .box3').text('');
+        $('#ex04 .box3').empty();
+        //결과적으로 셋다 똑같은 결과
+
+        //remove() -> 지정된 태그를 삭제
+        $('#ex04 .box2').remove();
+    </script>
+</body>
+</html>

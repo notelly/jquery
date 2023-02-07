@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <style>
+        table, td{
+            border: 1px solid black;
+        }
+
+    </style>
+</head>
+<body>
+    <table id = "producttable">
+        <thead>
+            <tr>
+                <td>UPC_Code</td>
+                <td>Product_Name</td>
+            </tr>
+        </thead>
+        <tbody>
+            <!--존재하는 데이터는 선택적으로 여기에 포함-->
+        </tbody>
+    </table>
+    <!--template 이안에 존재한 하위 요소들을 block 지워준다.-->
+    <template id = "productrow">
+        <tr>
+            <td class="record"></td>
+            <td></td>
+        </tr>
+    </template>
+    <script>
+        if('content' in document.createElement('template')){
+            //이거는 js로 진행 >> in은 뒤에 있는 객체에 앞에 있는 속성이 있는지 체크하는 것
+            //템플릿 태그 검색해서 찾아오고
+            let t = document.querySelector('#productrow');
+
+            //탬틀릿 태그가 싸고 있는 content를 복사하고
+            let clone = document.importNode(t.content, true);
+            //내부에 있는 td를 가지고 오고
+            let td = clone.querySelectorAll('td');
+            //내용을 적고
+            td[0].textContent = '1234567890';
+            td[1].textContent = 'Stuff';
+
+            //복사한 것을 붙인다.
+            document.querySelector('tbody').append(clone);
+
+            clone = document.importNode(t.content, true);
+            td = clone.querySelectorAll('td');
+            td[0].textContent = '0987654321';
+            td[1].textContent = 'Acme Kidny Beans 2';
+
+            document.querySelector('tbody').append(clone);
+        /*
+            template은 맨처음 등록할 때 자동으로 dom에 등록되지 않는다.
+            내부에 어떻게 구조를 짜든 출력되지 않는다. 그걸 출력하게 만들어 주는게 위의 코드
+            content는 속성이 있는지 확인하는 것
+        */
+        }
+    </script>
+</body>
+</html>

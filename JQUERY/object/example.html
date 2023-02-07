@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>example</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+	<script>
+		$(function(){
+			// --내용1로 변경
+			$('<p>내용1</p>').replaceAll('.wrap_1 p:eq(0)');
+			// --class="active" -> "on"으로 변경
+			//기존의 값을 삭제하고 class를 추가한게 된다.
+			//$('.active').prop('class', 'on');
+			//교수님
+			$('.wrap_1 p:eq(1)').removeClass('active').addClass('on');
+			// --네이버 링크추가
+			$('.wrap_1 p:eq(2) > a').prop('href', 'https://www.naver.com');
+			//prop는 실질적으로 동작할 수 있는 값을 주어야한다.
+			// --textbox = Korea
+			$('.wrap_1 p:eq(3) > input').prop('value', 'Korea');
+			// =$('.wrap_1 :text').val('Korea');
+			//value 값을 주는 거나 value 속성을 이용해서 value값을 주는 거나 동일하다.
+			// --after(추가1)
+			$('.wrap_2 p:eq(0)').after('<p>After(추가1)</p>')
+			// --before(추가2)
+			$('.wrap_2 p:eq(0)').before('<p>Before(추가2)</p>')
+		})
+	</script>
+  <div class="wrap_1">
+		<p>텍스트1</p>
+		<p class="active">내용2</p>
+		<p><a href="#">네이버</a></p>
+		<p>
+				<input type="text" value="Hello">
+		</p>
+	</div>
+	<div class="wrap_2"> 
+		<p>내용5</p>
+		<p>내용6</p>
+	</div>
+</body>
+</html>
