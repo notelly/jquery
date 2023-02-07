@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>event</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <p>
+        <img src="http://place-hold.it/300X300" class="img1">
+    </p>
+    <script>
+        // ready -> DOMContentedLoad
+        // : html 문서 로딩이 완료된 후에 동작
+        $(document).ready(function(){
+            let h1 = $('.img1').height();
+            console.log('ready : ', h1)
+        });
+        // 내가 ready가 되었다고 해서 외부 애들과 통신이 완료 되었다고 보기는 힘들다.
+        //위와 아래 둘다 같은 방식이지만 아래 방식을 더 많이 쓰긴 함
+        $(function(){
+            let h1 =$('.img1').height();
+            console.log('ready : ', h1);
+        });
+
+        // load -> load
+        //외부와 통신이 끝나고 완전한 상태
+        // : 외부에 연동된 코드 (ifram, img, video, etc)의 로딩이 완료된 후에 동작.
+        $(window).on('load', function(){ //dom은 굳이 따지면 뿌려주고 있는 것과 상관없이 실행 할 수 있다.
+            // on  = addEventListener
+            let h1 = $('.img1').height();
+            console.log('load : ', h1);
+        }) 
+
+        /*
+            -- jQuery 3 버전부터 가능하다.
+            $(선택자).load(url, data, complete)
+            data 와 complete은 선택사항 url은 필수적으로 적어주어야한다.
+            url : 경로
+            data : 보내고자 하는 데이터
+            complete : function 통신이 완료되고 하고자 하는 작업
+            load라는 메소드를 이용해서 처리할 수 있다.
+            ajax 굳이 필요 없음
+        */
+    </script>
+    <hr>
+    <!--load() 메소드-->
+    <div></div>
+    <script>
+        $('div').load('/sample.html', function(response, status, xhr){
+            console.log(response, status, xhr);
+        })
+    </script>
+</body>
+</html>
