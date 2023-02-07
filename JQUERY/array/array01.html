@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array01</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="ex01">
+        <h1>배열 메서드</h1>
+        <ul id="menu1">
+            <li>내용1-1</li>
+            <li>내용1-2</li>
+            <li>내용1-3</li>
+        </ul>
+        <ul id="menu2">
+            <li>내용2-1</li>
+            <li>내용2-2</li>
+            <li>내용2-3</li>
+        </ul>
+    </div>
+    <script>
+        let obj = [{
+                'area': '서울'
+            }, // 원래는 감싸주는 것이 맞다. -> 객체를 어쩌고 하는 것은 자동변환이 되기 때문에 상관 없지만 { area : '서울'} 
+            {
+                'area': '부산'
+            },
+            {
+                'area': '전주'
+            }
+        ]
+
+
+        //each() >> js의 foreach와 동일 : 배열에 대한 순환
+        $(obj).each(function (index, object) {
+            console.log(index, object);
+        })
+
+        let ulTag = $('<ul/>');
+        $.each(obj, function (idx, obj) {
+            let liTag = $('<li/>').text(obj["area"])
+            //["area"] vs [area] => 대괄호로 필드값을 요청할때는 ""를 써주어야 한다. 자동변환이 이루어지지 않음.
+            //변수 내부에서 값을 가지고 올때는 대괄호에서. 변수가 아니라 문자로 인식하기 때문에 ""에 넣어주어야한다.
+            ulTag.append(liTag);
+        });
+
+        //부모가 되어줄 태그를 검색
+        $('#ex01').append(ulTag);
+
+        //유사 배열이 된다.
+        //비슷하게 사용하면 된다.
+        //내부 값이 궁금하다. each를 사용하면 된다.
+        console.log("아")
+        $('#menu1 li').each(function (idx, tag) {
+            console.log(idx, tag, tag.textContent, $(tag).text());
+        })
+    </script>
+    <script>
+        //배열을 기반으로 한 새로운 배열을 만드는 map : 기존에 있는 것 중에 원하는 것을 골라내는 것이 가능 > js 에도 있음 : 기존 배열을 기반으로 새로운 배열을 만들때 크기는 동일 해야함(수정의 개념) grep
+        let arr1 = [{
+                "area": "서울",
+                "dept": "영업",
+                "name": "무대리"
+            },
+            {
+                "area": "부산",
+                "dept": "영업",
+                "name": "홍과장"
+            },
+            {
+                "area": "대전",
+                "dept": "생산",
+                "name": "박사장"
+            },
+            {
+                "area": "서울",
+                "dept": "생산",
+                "name": "김부장"
+            }
+        ]
+
+        // $.map -> return 값만 가지고 새로운 배열
+        // $() 객체를 인스턴스로 만드는 것
+        // $. 전역으로 호출 하는 것
+        let arr2 = $.map(arr1, function (obj, idx) {
+            //each랑 반대로 내부값 먼저, 그 다음 인덱스 순,
+            //Jquery는 메소드 별로 매개변수 순서가 다르다
+            //외우지 말고 잘 모르겠다 싶으면 임시변수 선언하고 출력해 볼것
+            if (obj.area == "서울")
+                return obj; //객체 전체를 넘겨도 되고 return obj.name;과 같이 이름만있는 배열 이런식으로 만들 수 도 있다.
+        });
+
+        console.log(arr2);
+        //map을 만들어진 배열 => 문자열로 이루어진 문자열 배열
+
+        // $.grep -> return이 true인 배열 내의 값을 가지고 세로운 배열을 만든다.
+        //        -> 오름차순 정렬(자동)
+        //내가 원본으로 가지고 있을 배열
+        let arr3 = $.grep(arr1, function (obj, idx) {
+            if (obj.dept == "영업")
+                return true; // 적합 부적합을 찍어서 적합만 가지고 오는 것
+            else
+                return false;
+        }); //grep으로 만들어진 배열 => 객체 배열
+
+        //arr1, arr2, arr3 => 다른 배열이지만 내부값을 공유한다.
+        arr3[0].name = "홍길동";
+        console.log(arr1, arr3); //둘다에게 영향을 준다. >> object(객체) 특성상 원본과 데이터를 공유한다
+
+        // 객체 배열을 완전히 분리하여 새로운 배열 생성
+        let arr4 = $.map(arr1, function (obj, idx) {
+            if (obj.dept == "생산")
+                return {
+                    "area": obj.area,
+                    "dept": obj.dept,
+                    "name": obj.name,
+                }
+        })
+        arr4[1].area = "대구";
+        console.log(arr1, arr4);
+    </script>
+    <div id="ex02">
+        <ul>
+            <li>근무지역 : 서울</li>
+        </ul>
+        <ul>
+            <li>부서 : 영업</li>
+        </ul>
+        <ul>
+            <li>부서 : 생산</li>
+        </ul>
+        <!-- 지역 : 전주, 부서: IT, 이름 : 박수훈 -->
+    </div>
+    <script>
+        let data = [{
+                "area": "서울",
+                "dept": "영업",
+                "name": "무대리"
+            },
+            {
+                "area": "부산",
+                "dept": "영업",
+                "name": "홍과장"
+            },
+            {
+                "area": "대전",
+                "dept": "생산",
+                "name": "박사장"
+            },
+            {
+                "area": "서울",
+                "dept": "생산",
+                "name": "김부장"
+            }
+        ]
+
+        let data01 = $.map(data, function (obj, idx) {
+            if (obj.area == "서울")
+                return {
+                    "area": obj.area,
+                    "dept": obj.dept,
+                    "name": obj.name,
+                }
+        });
+
+        console.log(data01);
+        let ul = document.createElement('ul');
+        let li = null;
+        $(data01).each(function (idx, obj) {
+            let li = document.createElement('li');
+            li.append("지역 : "+ obj["area"] +" 부서 : "+ obj["dept"] + " 이름 : "+ obj["name"]);
+            $('#ex02 > ul:eq(0)').append(li);
+
+        })
+
+
+        let data02 = $.grep(data, function (obj, idx) {
+            if (obj.dept == "영업")
+                return true;
+            else
+                return false;
+        });
+        console.log(data02);
+        $(data02).each(function (idx, obj) {
+            let li = document.createElement('li');
+            li.append("지역 : "+ obj["area"] +" 부서 : "+ obj["dept"] + " 이름 : "+ obj["name"]);
+            $('#ex02 > ul:eq(1)').append(li);
+
+        })
+
+        let data03 = $.map(data, function (obj, idx) {
+            if (obj.dept == "생산")
+                return obj;
+        })
+        console.log(data03);
+        $(data03).each(function (idx, obj) {
+            let li = document.createElement('li');
+            li.append("지역 : "+ obj["area"] +" 부서 : "+ obj["dept"] + " 이름 : "+ obj["name"]);
+            //객체이기(java는 toString을 사용해 사용가능) 때문에 개별적으로 정의를 해서 적어줘야한다. 
+            $('#ex02 > ul:eq(2)').append(li);
+
+        })
+
+        // 교수님
+        // 1) 근무지역 서울 -> each()
+        let areaDatas = [];
+        $(data).each(function (idx, obj) {
+            if (obj.area == "서울") {
+                areaDatas.push(obj);
+
+                //태그 추가
+                let liTag = $('<li/>').text(
+                    `지역 : ${obj["area"]}, 부서 : ${obj["dept"]}, 이름 : ${obj["name"]}`
+                );
+                $('#ex02 > ul:first').append(liTag);
+            }
+        })
+
+        console.log('1', areaDatas);
+
+        // 2) 부서 영업 -> map() : return 에 정의한 어떤 형태의 값이라도 새로운 배열에 추가 가능
+        let saleDatas = $.map(data, function(obj, idx){
+            if(obj.dept == "영업"){
+                //return `지역 : ${obj["area"]}, 부서 : ${obj["dept"]}, 이름 : ${obj["name"]}`
+                return obj;
+            }
+        });
+
+        //통째로 집어 넣어도 되는지, 낱개로 넣어줘야 하는지 확인하고 넣어주면 된다.
+        $.each(saleDatas, function(idx, obj){
+            let liTag = $('<li/>').text(
+                    `지역 : ${obj["area"]}, 부서 : ${obj["dept"]}, 이름 : ${obj["name"]}`
+                );
+                $('#ex02 > ul:eq(1)').append(liTag);
+        })
+
+        // 3) 부서 생산 -> grep() : return 값이 true인 원본 배열의 값을 모아서 새로운 배열 생성
+        let productDatas = $.grep(data, function(obj, idx){
+            if(obj.dept == "생산")
+                return true;
+            else
+                return false;
+        });
+
+        $.each(productDatas, function(idx, obj){
+            let liTag = $('<li/>').text(
+                    `지역 : ${obj["area"]}, 부서 : ${obj["dept"]}, 이름 : ${obj["name"]}`
+                );
+                $('#ex02 > ul:eq(2)').append(liTag);
+        })
+    </script>
+    <script>
+        let city = ["서울", "대전", "부산", "전주"];
+        let country = ["한국", "미국", "일본", "중국"];
+        let empinfo = {"name" : "정부장", "area" : "서울"};
+
+        let empList = [
+            {"name" : "김대리", "area" : "대전"},
+            {"name" : "이사원", "area" : "부산"},
+            {"name" : "하부장", "area" : "전주"},
+            {"name" : "유전무", "area" : "서울"}
+        ]
+
+        // inArray() -> 배열 안에 데이터가 있다면 해당 인덱스, 없다면 -1
+        if($.inArray("부산", city) > -1){
+            //검색하고자 하는 값, 배열
+            console.log('해당배열에 부산이 존재합니다.')
+        }
+        // isArray() -> 매개변수가 배열인지 확인
+        //           -> typeof : 배열 -> object로 인지한다.
+        console.log("country 의 배열 여부 : ", $.isArray(country));
+        console.log("empinfo 의 배열 여부 : ", $.isArray(empinfo));
+        //boolean 타입이 반환된다.
+
+        //merge(first, second) : 두개의 배열을 합친다.
+        // -> first secound => first
+        $.merge(empList, country);
+        
+        $(empList).each(function(idx, obj){
+            console.log(idx, obj);
+        })
+
+        //첫번째 매개변수로 들어온 배열에 두번째 매개 변수가 추가된다.
+        //기존의 배열에 값을 추가할 때
+    </script>
+    <div id = "ex03">
+        <ul>
+            <li>내용1</li>
+            <li>내용2</li>
+            <li id = "list3">내용3</li>
+            <li>내용4</li>
+        </ul>
+    </div>
+    <script>
+        //find or 뭐 와 달리 index() 인덱스 값을 리턴한다.
+        //index() -> 선택자를 이용한 결과(보통 nodelist) 중에 검색조건을 만족하는 요소의 인덱스 값
+        let search = $('#ex03 li');
+        let index = search.index($('#list3'));
+        let tag = search.eq(index) //eq는 선택자로 내부에 써도 되고, 바깥에서 써도 상관 없다.
+
+        console.log(tag.text());
+    </script>
+</body>
+
+</html>
